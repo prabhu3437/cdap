@@ -1215,9 +1215,10 @@ features:
     MarketHydratorPluginUpload:
       headerlabel: Add Hydrator Plugin
     MicroserviceUpload:
-      callToAction: Go to Microservice
+      callToAction: Start Microservice
       headerlabel: Add Microservice
       footertitle: Add Microservice
+      secondaryCallToAction: Microservice Details
       Step1:
         description: Provide name, description and version for a microservice you would like to create.
         descriptionPlaceholder: Description of the microservice

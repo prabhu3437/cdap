@@ -106,12 +106,20 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+
+            &.disabled {
+              pointer-events: auto;
+            }
           }
 
           .secondary-call-to-action {
             color: white;
             margin-left: 50px;
             font-size: 14px;
+          }
+
+          .fa.fa-spinner {
+            margin-left: 5px;
           }
         }
 

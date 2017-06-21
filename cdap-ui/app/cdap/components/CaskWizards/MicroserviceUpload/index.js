@@ -21,6 +21,7 @@ import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/
 import MicroserviceUploadWizardConfig from 'services/WizardConfigs/MicroserviceUploadWizardConfig';
 import MicroserviceUploadActionCreator from 'services/WizardStores/MicroserviceUpload/ActionCreator';
 import NamespaceStore from 'services/NamespaceStore';
+import {MyProgramApi} from 'api/program';
 import T from 'i18n-react';
 import ee from 'event-emitter';
 import globalEvents from 'services/global-events';
@@ -64,24 +65,54 @@ export default class MicroserviceUploadWizard extends Component {
       showWizard: !this.state.showWizard
     });
   }
+  startMicroservice() {
+    let namespace = NamespaceStore.getState().selectedNamespace;
+    let appId = MicroserviceUploadStore.getState().general.instanceName;
+
+    let params = {
+      namespace,
+      appId,
+      programType: 'workers',
+      programId: 'microservice',
+      action: 'start'
+    };
+
+    return MyProgramApi.action(params)
+      .map((res) => {
+        window.location.href = window.getAbsUIUrl({
+          namespaceId: namespace,
+          appId
+        });
+        return res;
+      });
+  }
   buildSuccessInfo() {
     let appName = MicroserviceUploadStore.getState().general.instanceName;
     let namespace = NamespaceStore.getState().selectedNamespace;
     let message = T.translate('features.Wizard.MicroserviceUpload.success', {appName});
     let buttonLabel = T.translate('features.Wizard.MicroserviceUpload.callToAction');
-    let linkLabel = T.translate('features.Wizard.GoToHomePage');
+    let links = [
+      {
+        linkLabel: T.translate('features.Wizard.MicroserviceUpload.secondaryCallToAction'),
+        linkUrl: window.getAbsUIUrl({
+          namespaceId: namespace,
+          appId: appName
+        })
+      },
+      {
+        linkLabel: T.translate('features.Wizard.GoToHomePage'),
+        linkUrl: window.getAbsUIUrl({
+          namespaceId: namespace
+        })
+      }
+    ];
     this.setState({
       successInfo: {
         message,
         buttonLabel,
-        buttonUrl: window.getAbsUIUrl({
-          namespaceId: namespace,
-          appId: appName
-        }),
-        linkLabel,
-        linkUrl: window.getAbsUIUrl({
-          namespaceId: namespace
-        })
+        buttonUrl: 'javascript:;', // don't go anywhere, all behavior will be handled by buttonOnClick
+        buttonOnClick: this.startMicroservice.bind(this),
+        links
       }
     });
   }

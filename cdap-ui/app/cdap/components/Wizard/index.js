@@ -48,11 +48,13 @@ export default class Wizard extends Component {
     this.state = {
       activeStep: this.props.wizardConfig.steps[0].id,
       loading: false,
+      loadingCTA: false,
       error: '',
       requiredStepsCompleted: false
     };
 
     this.handleCallToActionClick = this.handleCallToActionClick.bind(this);
+    this.handleMainCallToActionClick = this.handleMainCallToActionClick.bind(this);
     this.eventEmitter = ee(ee);
   }
   componentWillMount() {
@@ -135,6 +137,38 @@ export default class Wizard extends Component {
     return state && state.__complete;
   }
 
+  handleCallToActionClick() {
+    this.eventEmitter.emit(globalEvents.CLOSEMARKET);
+  }
+
+  handleMainCallToActionClick() {
+    if (this.state.callToActionInfo.buttonOnClick) {
+      this.setState({loadingCTA: true});
+      let buttonClickReturn = this.state.callToActionInfo.buttonOnClick();
+      if (buttonClickReturn instanceof Rx.Observable) {
+        buttonClickReturn
+        .subscribe(
+          () => {
+            this.setState({
+              error: false,
+              loadingCTA: false
+            });
+            this.handleCallToActionClick();
+          },
+          (err) => {
+            this.setState({
+              error: err,
+              loadingCTA: false
+            });
+            this.handleCallToActionClick();
+          }
+        );
+      }
+    } else {
+      this.handleCallToActionClick();
+    }
+  }
+
   getNavigationButtons(matchedStep) {
     let matchedIndex = currentStepIndex(this.props.wizardConfig.steps, matchedStep.id);
     let navButtons;
@@ -204,10 +238,6 @@ export default class Wizard extends Component {
     return navButtons;
   }
 
-  handleCallToActionClick() {
-    this.eventEmitter.emit(globalEvents.CLOSEMARKET);
-  }
-
   getStepHeaders() {
     let stepHeaders = this.props
       .wizardConfig
@@ -272,21 +302,44 @@ export default class Wizard extends Component {
             <a
               href={callToActionInfo.buttonUrl}
               title={callToActionInfo.buttonLabel}
-              className="call-to-action btn btn-primary"
-              onClick={this.handleCallToActionClick}
+              className={classnames("call-to-action btn btn-primary", {'disabled': this.state.loadingCTA})}
+              onClick={this.handleMainCallToActionClick}
             >
               {callToActionInfo.buttonLabel}
+              {
+                this.state.loadingCTA ?
+                  <span className="fa fa-spin fa-spinner" />
+                :
+                  null
+              }
             </a>
-            <a
-              href={callToActionInfo.linkUrl}
-              className="secondary-call-to-action text-white"
-              onClick={this.handleCallToActionClick}
-            >
-              {callToActionInfo.linkLabel}
-            </a>
+            {
+              callToActionInfo.links ?
+                (
+                  callToActionInfo.links.map(link => {
+                    return (
+                      this.getCallToActionLink(link)
+                    );
+                  })
+                )
+              :
+                this.getCallToActionLink(callToActionInfo)
+            }
           </div>
         </div>
       </div>
+    );
+  }
+
+  getCallToActionLink(link) {
+    return (
+      <a
+        href={link.linkUrl}
+        className="secondary-call-to-action text-white"
+        onClick={this.handleCallToActionClick}
+      >
+        {link.linkLabel}
+      </a>
     );
   }
 
