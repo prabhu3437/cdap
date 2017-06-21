@@ -116,7 +116,10 @@ export default class DSVEditor extends Component {
             return (
               <div key={row.uniqueId}>
                 <Provider store={this.DSVStore}>
-                  <DSVRowWrapper index={index} />
+                  <DSVRowWrapper
+                    index={index}
+                    placeholder={this.props.placeholder}
+                  />
                 </Provider>
               </div>
             );
@@ -129,5 +132,6 @@ export default class DSVEditor extends Component {
 
 DSVEditor.propTypes = {
   values: PropTypes.array,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string
 };

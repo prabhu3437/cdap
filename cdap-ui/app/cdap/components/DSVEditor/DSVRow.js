@@ -15,6 +15,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import T from 'i18n-react';
 
 export default class DSVRow extends Component {
   constructor(props) {
@@ -30,6 +31,8 @@ export default class DSVRow extends Component {
   }
 
   render() {
+    let placeholder = this.props.placeholder || T.translate('commons.DSVEditor.placeholder');
+
     return (
       <div className="dsv-row-container">
         <div className="dsv-input-container">
@@ -40,6 +43,7 @@ export default class DSVRow extends Component {
             onKeyDown={this.keyDown}
             onChange={this.props.onChange.bind(null, 'property')}
             className="form-control"
+            placeholder={placeholder}
           />
         </div>
 
@@ -69,4 +73,5 @@ DSVRow.propTypes = {
   onChange: PropTypes.func,
   addRow: PropTypes.func,
   removeRow: PropTypes.func,
+  placeholder: PropTypes.string
 };

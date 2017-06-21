@@ -18,6 +18,8 @@ import KeyValuePairs from 'components/KeyValuePairs';
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
 import {Provider, connect} from 'react-redux';
+import T from 'i18n-react';
+
 require('./PropertiesStep.scss');
 
 export default function PropertiesStep() {
@@ -47,7 +49,9 @@ export default function PropertiesStep() {
   return (
     <div className="microservice-properties">
       <Provider store={MicroserviceUploadStore}>
-        <KeyValuePairsWrapper />
+        <KeyValuePairsWrapper
+          keyPlaceholder={T.translate('features.Wizard.MicroserviceUpload.Step6.keyPlaceholder')}
+        />
       </Provider>
     </div>
   );

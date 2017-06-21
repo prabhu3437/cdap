@@ -3,6 +3,8 @@
 commons:
   cask: CASK
   cdap: CDAP
+  DSVEditor:
+    placeholder: value
   entity:
     application:
       plural: Applications
@@ -1260,13 +1262,14 @@ features:
         fetchLabel: Fetch size
         fetchPlaceholder: The fetch size across all the queues.
         inboundLabel: Inbound queues
-        inboundPlaceholder: Comma-separated list of inbound queues
+        inboundPlaceholder: Name of inbound queue
         outboundLabel: Outbound queues
-        outboundPlaceholder: Comma-separated list of outbound queues
+        outboundPlaceholder: Name of outbound queue
         shorttitle: Endpoint Specification
         title: Endpoint Specification
       Step6:
         description: Provide microservice specific properties.
+        keyPlaceholder: name
         propertiesLabel: Properties
         shorttitle: Properties
         title: Properties

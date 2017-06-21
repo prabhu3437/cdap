@@ -16,9 +16,9 @@
 import React from 'react';
 import {connect, Provider} from 'react-redux';
 import DSVEditor from 'components/DSVEditor';
-
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
+import T from 'i18n-react';
 
 const mapStateToInboundQueuesProps = (state) => {
   return {
@@ -44,7 +44,9 @@ const DSVWrapper = connect(
 export default function DSVInboundQueues() {
   return (
     <Provider store={MicroserviceUploadStore}>
-      <DSVWrapper />
+      <DSVWrapper
+        placeholder={T.translate('features.Wizard.MicroserviceUpload.Step5.inboundPlaceholder')}
+      />
     </Provider>
   );
 }
