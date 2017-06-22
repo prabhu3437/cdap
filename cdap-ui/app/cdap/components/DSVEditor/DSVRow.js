@@ -16,6 +16,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import T from 'i18n-react';
+import { preventPropagation } from 'services/helpers';
 
 export default class DSVRow extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ export default class DSVRow extends Component {
 
   keyDown(e) {
     if (e.keyCode === 13) {
+      preventPropagation(e);
       this.props.addRow();
     }
   }

@@ -21,8 +21,8 @@ import T from 'i18n-react';
 
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
-import DSVInboundQueues from './DSVInboundQueues.js';
-import DSVOutboundQueues from './DSVOutboundQueues.js';
+import DSVInboundQueues from 'components/CaskWizards/MicroserviceUpload/EndpointStep/DSVInboundQueues';
+import DSVOutboundQueues from 'components/CaskWizards/MicroserviceUpload/EndpointStep/DSVOutboundQueues';
 
 const mapStateToFetchSizeProps = (state) => {
   return {

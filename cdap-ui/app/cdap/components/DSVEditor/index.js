@@ -16,9 +16,9 @@
 
 import React, { Component, PropTypes } from 'react';
 import {connect , Provider} from 'react-redux';
-import DSVActions from './DSVActions';
-import {createDSVStore} from './DSVStore';
-import DSVRow from './DSVRow';
+import DSVActions from 'components/DSVEditor/DSVActions';
+import {createDSVStore} from 'components/DSVEditor/DSVStore';
+import DSVRow from 'components/DSVEditor/DSVRow';
 
 require('./DSVEditor.scss');
 

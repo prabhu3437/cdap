@@ -16,7 +16,7 @@
 import {combineReducers, createStore} from 'redux';
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
 import MicroserviceUploadWizardConfig from 'services/WizardConfigs/MicroserviceUploadWizardConfig';
-import {getArtifactNameAndVersion} from 'services/helpers';
+import {getArtifactNameAndVersion, defaultAction, requiredFieldsCompleted} from 'services/helpers';
 import head from 'lodash/head';
 import cloneDeep from 'lodash/cloneDeep';
 import shortid from 'shortid';
@@ -76,10 +76,6 @@ const defaultPropertiesState = Object.assign({
   }
 }, defaultState, { __complete: true });
 
-const defaultAction = {
-  type: '',
-  payload: {}
-};
 const defaultInitialState = {
   general: defaultGeneralState,
   uploadjar: defaultJarState,
@@ -89,15 +85,6 @@ const defaultInitialState = {
   properties: defaultPropertiesState
 };
 
-// Utilities. FIXME: Move to a common place?
-const isNil = (value) => value === null || typeof value === 'undefined' || value === '';
-const isComplete = (state, requiredFields) => {
-  let emptyFieldsInState = Object.keys(state)
-    .filter(fieldName => {
-      return isNil(state[fieldName]) && requiredFields.indexOf(fieldName) !== -1;
-    });
-  return !emptyFieldsInState.length ? true : false;
-};
 const generalStepRequiredFields = head(
   MicroserviceUploadWizardConfig
     .steps
@@ -157,7 +144,7 @@ const general = (state = defaultGeneralState, action = defaultAction) => {
       return state;
   }
   return Object.assign({}, stateCopy, {
-    __complete: isComplete(stateCopy, generalStepRequiredFields),
+    __complete: requiredFieldsCompleted(stateCopy, generalStepRequiredFields),
     __error: action.payload.error || false
   });
 };
@@ -270,7 +257,7 @@ const configure = (state = defaultConfigureState, action = defaultAction) => {
       return state;
   }
   return Object.assign({}, stateCopy, {
-    __complete: isComplete(stateCopy, configureStepRequiredFields),
+    __complete: requiredFieldsCompleted(stateCopy, configureStepRequiredFields),
     __error: action.payload.error || false
   });
 };
