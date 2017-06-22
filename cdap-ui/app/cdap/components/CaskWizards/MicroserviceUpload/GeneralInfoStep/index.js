@@ -14,7 +14,7 @@
  * the License.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect, Provider } from 'react-redux';
 import MicroserviceUploadActions  from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
@@ -43,7 +43,7 @@ const mapStateToMicroserviceVersionProps = (state) => {
   return {
     value: state.general.version,
     type: 'number',
-    min: '1',
+    min: 1,
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step1.versionPlaceholder')
   };
 };
@@ -52,6 +52,13 @@ const mapStateToMicroserviceNameProps = (state) => {
     value: state.general.microserviceName,
     type: 'text',
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step1.microserviceNamePlaceholder')
+  };
+};
+const mapStateToGeneralStepSummaryProps = (state) => {
+  return {
+    microserviceName: state.general.microserviceName,
+    instanceName: state.general.instanceName,
+    version: state.general.version
   };
 };
 
@@ -94,6 +101,20 @@ const mapDispatchToMicroserviceNameProps = (dispatch) => {
   };
 };
 
+let Summary = ({microserviceName, instanceName, version}) => {
+  return (
+    <span>
+      {T.translate('features.Wizard.MicroserviceUpload.Step1.summary', { microserviceName, instanceName, version })}
+    </span>
+  );
+};
+
+Summary.propTypes = {
+  microserviceName: PropTypes.string,
+  instanceName: PropTypes.string,
+  version: PropTypes.number
+};
+
 const InputMicroserviceInstanceName = connect(
   mapStateToInstanceNameProps,
   mapDispatchToInstanceNameProps
@@ -110,6 +131,10 @@ const InputMicroserviceName = connect(
   mapStateToMicroserviceNameProps,
   mapDispatchToMicroserviceNameProps
 )(InputWithValidations);
+Summary = connect(
+  mapStateToGeneralStepSummaryProps,
+  null
+)(Summary);
 
 export default function GeneralInfoStep() {
   return (
@@ -156,6 +181,10 @@ export default function GeneralInfoStep() {
           </Col>
           <i className="fa fa-asterisk text-danger float-xs-left"/>
         </FormGroup>
+        <div className="step-summary">
+          <Label className="summary-label">{T.translate('features.Wizard.MicroserviceUpload.summaryLabel')}</Label>
+          <Summary />
+        </div>
       </Form>
     </Provider>
   );

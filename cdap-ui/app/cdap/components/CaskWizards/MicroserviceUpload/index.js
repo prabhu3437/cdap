@@ -26,7 +26,7 @@ import T from 'i18n-react';
 import ee from 'event-emitter';
 import globalEvents from 'services/global-events';
 
-require('components/CaskWizards/ArtifactUpload/ArtifactUpload.scss');
+require('./MicroserviceUpload.scss');
 
 export default class MicroserviceUploadWizard extends Component {
   constructor(props) {
@@ -125,7 +125,7 @@ export default class MicroserviceUploadWizard extends Component {
         title={wizardModalTitle}
         isOpen={this.state.showWizard}
         toggle={this.toggleWizard.bind(this, false)}
-        className="artifact-upload-wizard"
+        className="microservice-upload-wizard artifact-upload-wizard"
       >
         <Wizard
           wizardConfig={MicroserviceUploadWizardConfig}

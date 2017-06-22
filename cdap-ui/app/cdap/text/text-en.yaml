@@ -383,8 +383,8 @@ features:
           namecollabel: NAME
         tableCount:
           0: No Tables
-          1: '{count} Table'
-          _: "{count} Tables"
+          1: '{context} Table'
+          _: "{context} Tables"
         title: Select Table
     Directives:
       apply: Apply
@@ -1229,6 +1229,7 @@ features:
         microserviceNameLabel: Microservice Name
         microserviceNamePlaceholder: Name of the microservice
         shorttitle: General
+        summary: "Creates an instance of Microservice '{microserviceName}' with name '{instanceName}' and version {version}."
         title: General
         versionLabel: Version
         versionPlaceholder: Version of the microservice
@@ -1252,6 +1253,21 @@ features:
         memoryLabel: Memory
         memoryPlaceholder: The memory in MB for the microservice
         shorttitle: Resources
+        summary:
+          count:
+            instances:
+              1: '{context} instance'
+              _: '{context} instances'
+            vcores:
+              1: '{context} core'
+              _: '{context} cores'
+            memory:
+              1: '{context} MB'
+              _: '{context} MBs'
+            ethreshold:
+              1: '{context} error'
+              _: '{context} errors'
+          text: "{instancesWithCount} of microservice '{instanceName}' will be started using {vcoresWithCount}, {memoryWithCount} of memory and with error threshold on event processing as {ethresholdWithCount}."
         thresholdLabel: Threshold
         thresholdPlaceholder: TBD
         title: Resources
@@ -1274,6 +1290,7 @@ features:
         shorttitle: Properties
         title: Properties
       success: You have successfully created the microservice "{appName}".
+      summaryLabel: "Summary: "
     OneStepDeploy:
       headerlabel: Deploy
       Step1:

@@ -14,11 +14,11 @@
  * the License.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect, Provider } from 'react-redux';
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
-import { Col, Label, FormGroup, Form, Input } from 'reactstrap';
+import { Col, Label, FormGroup, Form } from 'reactstrap';
 import InputWithValidations from 'components/InputWithValidations';
 import T from 'i18n-react';
 
@@ -54,6 +54,16 @@ const mapStateToMicroserviceThresholdProps = (state) => {
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step4.thresholdPlaceholder')
   };
 };
+const mapStateToConfigureStepSummaryProps = (state) => {
+  return {
+    instanceName: state.general.instanceName,
+    instances: state.configure.instances,
+    vcores: state.configure.vcores,
+    memory: state.configure.memory,
+    ethreshold: state.configure.ethreshold,
+  };
+};
+
 
 const mapDispatchToMicroserviceInstancesProps = (dispatch) => {
   return {
@@ -90,6 +100,26 @@ const mapDispatchToMicroserviceThresholdProps = (dispatch) => {
   };
 };
 
+let Summary = ({instanceName, instances, vcores, memory, ethreshold}) => {
+  let instancesWithCount = T.translate('features.Wizard.MicroserviceUpload.Step4.summary.count.instances', { context: instances });
+  let vcoresWithCount = T.translate('features.Wizard.MicroserviceUpload.Step4.summary.count.vcores', { context: vcores });
+  let memoryWithCount = T.translate('features.Wizard.MicroserviceUpload.Step4.summary.count.memory', { context: memory });
+  let ethresholdWithCount = T.translate('features.Wizard.MicroserviceUpload.Step4.summary.count.ethreshold', { context: ethreshold });
+  return (
+    <span>
+      {T.translate('features.Wizard.MicroserviceUpload.Step4.summary.text', { instanceName, instancesWithCount, vcoresWithCount, memoryWithCount, ethresholdWithCount })}
+    </span>
+  );
+};
+
+Summary.propTypes = {
+  instanceName: PropTypes.string,
+  instances: PropTypes.number,
+  vcores: PropTypes.number,
+  memory: PropTypes.number,
+  ethreshold: PropTypes.number
+};
+
 const InputMicroserviceInstances = connect(
   mapStateToMicroserviceInstancesProps,
   mapDispatchToMicroserviceInstancesProps
@@ -105,14 +135,18 @@ const InputMicroserviceMemory = connect(
 const InputMicroserviceThreshold = connect(
   mapStateToMicroserviceThresholdProps,
   mapDispatchToMicroserviceThresholdProps
-)(Input);
+)(InputWithValidations);
+Summary = connect(
+  mapStateToConfigureStepSummaryProps,
+  null
+)(Summary);
 
 
 export default function ConfigureStep() {
   return (
     <Provider store={MicroserviceUploadStore}>
       <Form
-        className="form-horizontal general-info-step"
+        className="form-horizontal configure-step"
         onSubmit={(e) => {
           e.preventDefault();
           return false;
@@ -157,6 +191,10 @@ export default function ConfigureStep() {
           </Col>
           <i className="fa fa-asterisk text-danger float-xs-left"/>
         </FormGroup>
+        <div className="step-summary">
+          <Label className="summary-label">{T.translate('features.Wizard.MicroserviceUpload.summaryLabel')}</Label>
+          <Summary />
+        </div>
       </Form>
     </Provider>
   );
