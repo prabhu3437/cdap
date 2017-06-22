@@ -125,7 +125,7 @@ const WizardTypesMap = {
   'create_microservice_rc': {
     tag: MicroserviceUploadWizard,
     store: MicroserviceUploadStore
-  },
+  }
 };
 
 export default function AbstractWizard({isOpen, onClose, wizardType, input, backdrop}) {

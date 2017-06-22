@@ -30,7 +30,7 @@ const mapDispatchToOutboundQueuesProps = (dispatch) => {
   return {
     onChange: (values) => (dispatch({
       type: MicroserviceUploadActions.setOutboundQueues,
-      payload: { outboundQueues: values}
+      payload: { outboundQueues: values }
     }))
   };
 };

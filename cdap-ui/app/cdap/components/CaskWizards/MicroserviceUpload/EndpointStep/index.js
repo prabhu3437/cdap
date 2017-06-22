@@ -16,13 +16,12 @@
 import React from 'react';
 import {connect, Provider} from 'react-redux';
 import {Col, FormGroup, Label, Form} from 'reactstrap';
-import InputWithValidations from 'components/InputWithValidations';
-import T from 'i18n-react';
-
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
 import DSVInboundQueues from 'components/CaskWizards/MicroserviceUpload/EndpointStep/DSVInboundQueues';
 import DSVOutboundQueues from 'components/CaskWizards/MicroserviceUpload/EndpointStep/DSVOutboundQueues';
+import InputWithValidations from 'components/InputWithValidations';
+import T from 'i18n-react';
 
 const mapStateToFetchSizeProps = (state) => {
   return {
@@ -37,7 +36,7 @@ const mapDispatchToFetchSizeProps = (dispatch) => {
   return {
     onChange: (e) => (dispatch({
       type: MicroserviceUploadActions.setFetchSize,
-      payload: { fetchSize: e.target.value}
+      payload: { fetchSize: e.target.value }
     }))
   };
 };

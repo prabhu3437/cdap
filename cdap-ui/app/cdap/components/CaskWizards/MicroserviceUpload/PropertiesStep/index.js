@@ -22,30 +22,29 @@ import T from 'i18n-react';
 
 require('./PropertiesStep.scss');
 
-export default function PropertiesStep() {
-
-  const mapStateToKeyValProps = (state) => {
+const mapStateToKeyValProps = (state) => {
     return {
       keyValues : state.properties.keyValues
     };
   };
 
-  const mapDispatchToKeyValProps = (dispatch) => {
-    return {
-      onKeyValueChange: (keyValues) => {
-        dispatch({
-          type: MicroserviceUploadActions.setProperties,
-          payload: { keyValues }
-        });
-      }
-    };
+const mapDispatchToKeyValProps = (dispatch) => {
+  return {
+    onKeyValueChange: (keyValues) => {
+      dispatch({
+        type: MicroserviceUploadActions.setProperties,
+        payload: { keyValues }
+      });
+    }
   };
+};
 
-  const KeyValuePairsWrapper = connect(
-    mapStateToKeyValProps,
-    mapDispatchToKeyValProps
-  )(KeyValuePairs);
+const KeyValuePairsWrapper = connect(
+  mapStateToKeyValProps,
+  mapDispatchToKeyValProps
+)(KeyValuePairs);
 
+export default function PropertiesStep() {
   return (
     <div className="microservice-properties">
       <Provider store={MicroserviceUploadStore}>

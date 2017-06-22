@@ -35,4 +35,5 @@ const MicroserviceUploadAction = {
   onSuccess: 'FORM-SUBMIT-SUCCESS',
   onReset: 'FORM-RESET'
 };
+
 export default MicroserviceUploadAction;

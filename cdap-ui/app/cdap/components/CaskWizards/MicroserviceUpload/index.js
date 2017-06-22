@@ -133,7 +133,8 @@ export default class MicroserviceUploadWizard extends Component {
           store={MicroserviceUploadStore}
           onSubmit={this.onSubmit.bind(this)}
           successInfo={this.state.successInfo}
-          onClose={this.toggleWizard.bind(this)}/>
+          onClose={this.toggleWizard.bind(this)}
+        />
       </WizardModal>
     );
   }
@@ -144,7 +145,7 @@ MicroserviceUploadWizard.defaultProps = {
     action: {
       arguments: {}
     },
-    package: {},
+    package: {}
   }
 };
 
