@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015 Cask Data, Inc.
+ * Copyright © 2015-2017 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -46,16 +46,11 @@ angular.module(PKG.name + '.commons')
 
         var dataMap = [];
 
-        resource.list(params)
-          .$promise
-          .then(function (res) {
-            $scope.list = res;
-
-            dataMap = res.map(function (d) { return d.name; });
-          });
-
-        $scope.$watch('model', function () {
-          if (!$scope.model || dataMap.indexOf($scope.model) === -1 ) { return; }
+        var emitSelectedDataset = function() {
+          if (!$scope.model || dataMap.indexOf($scope.model) === -1 ) {
+            EventPipe.emit('dataset.selected', '', null, false);
+            return;
+          }
 
           if ($scope.datasetType === 'stream') {
             params.streamId = $scope.model;
@@ -75,9 +70,23 @@ angular.module(PKG.name + '.commons')
                 EventPipe.emit('dataset.selected', schema, format);
               } else if ($scope.datasetType === 'dataset') {
                 schema = res.spec.properties.schema;
-                EventPipe.emit('dataset.selected', schema);
+                EventPipe.emit('dataset.selected', schema, null, true);
               }
             });
+        };
+
+        resource.list(params)
+          .$promise
+          .then(function (res) {
+            $scope.list = res;
+
+            dataMap = res.map(function (d) { return d.name; });
+            emitSelectedDataset();
+
+          });
+
+        $scope.$watch('model', function () {
+          emitSelectedDataset();
         });
 
 

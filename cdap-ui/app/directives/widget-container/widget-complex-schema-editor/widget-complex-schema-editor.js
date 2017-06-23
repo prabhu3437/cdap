@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 Cask Data, Inc.
+ * Copyright © 2016-2017 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -139,11 +139,18 @@ function ComplexSchemaEditorController($scope, EventPipe, $timeout, myAlertOnVal
     }
   }
 
-  EventPipe.on('dataset.selected', function (schema, format) {
+  EventPipe.on('dataset.selected', function (schema, format, isDisabled) {
     if (watchProperty && format) {
       vm.pluginProperties[watchProperty] = format;
     }
+    // This angular lodash doesn't seem to have isNil
+    if (!_.isUndefined(isDisabled) && !_.isNull(isDisabled)) {
+      vm.isDisabled = isDisabled;
+    }
     vm.schemaObj = schema;
+    if (_.isEmpty(vm.schemaObj)) {
+      vm.schemaObj = vm.model;
+    }
     reRenderComplexSchema();
   });
 
