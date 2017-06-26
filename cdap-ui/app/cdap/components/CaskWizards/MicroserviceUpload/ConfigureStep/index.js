@@ -20,13 +20,14 @@ import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/Mi
 import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadActions';
 import { Col, Label, FormGroup, Form } from 'reactstrap';
 import InputWithValidations from 'components/InputWithValidations';
+import { preventPropagation } from 'services/helpers';
 import T from 'i18n-react';
 
 const mapStateToMicroserviceInstancesProps = (state) => {
   return {
     value: state.configure.instances,
     type: 'number',
-    min: '1',
+    min: 1,
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step4.instancesPlaceholder')
   };
 };
@@ -34,7 +35,7 @@ const mapStateToMicroserviceVCoresProps = (state) => {
   return {
     value: state.configure.vcores,
     type: 'number',
-    min: '1',
+    min: 1,
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step4.vcoresPlaceholder')
   };
 };
@@ -42,7 +43,7 @@ const mapStateToMicroserviceMemoryProps = (state) => {
   return {
     value: state.configure.memory,
     type: 'number',
-    min: '1',
+    min: 1,
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step4.memoryPlaceholder')
   };
 };
@@ -50,7 +51,7 @@ const mapStateToMicroserviceThresholdProps = (state) => {
   return {
     value: state.configure.ethreshold,
     type: 'number',
-    min: '1',
+    min: 1,
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step4.thresholdPlaceholder')
   };
 };
@@ -120,6 +121,9 @@ Summary.propTypes = {
   ethreshold: PropTypes.number
 };
 
+// FIXME: Should pass validationError to the InputWithValidations, or just switch
+// to using Input if we don't need validations
+
 const InputMicroserviceInstances = connect(
   mapStateToMicroserviceInstancesProps,
   mapDispatchToMicroserviceInstancesProps
@@ -148,7 +152,7 @@ export default function ConfigureStep() {
       <Form
         className="form-horizontal configure-step"
         onSubmit={(e) => {
-          e.preventDefault();
+          preventPropagation(e);
           return false;
         }}
       >

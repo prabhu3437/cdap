@@ -21,13 +21,14 @@ import MicroserviceUploadActions from 'services/WizardStores/MicroserviceUpload/
 import DSVInboundQueues from 'components/CaskWizards/MicroserviceUpload/EndpointStep/DSVInboundQueues';
 import DSVOutboundQueues from 'components/CaskWizards/MicroserviceUpload/EndpointStep/DSVOutboundQueues';
 import InputWithValidations from 'components/InputWithValidations';
+import { preventPropagation } from 'services/helpers';
 import T from 'i18n-react';
 
 const mapStateToFetchSizeProps = (state) => {
   return {
     value: state.endpoints.fetch,
     type: 'number',
-    min: '1',
+    min: 1,
     placeholder: T.translate('features.Wizard.MicroserviceUpload.Step5.fetchPlaceholder')
   };
 };
@@ -52,7 +53,7 @@ export default function EndpointStep() {
       <Form
         className="form-horizontal"
         onSubmit={(e) => {
-          e.preventDefault();
+          preventPropagation(e);
           return false;
         }}
       >

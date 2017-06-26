@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 Cask Data, Inc.
+ * Copyright © 2016-2017 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -17,17 +17,18 @@ import React, {Component, PropTypes} from 'react';
 import Rx from 'rx';
 import findIndex from 'lodash/findIndex';
 import first from 'lodash/head';
-import T from 'i18n-react';
-
-require('./Wizard.scss');
 import shortid from 'shortid';
 import isEmpty from 'lodash/isEmpty';
 import WizardStepHeader from './WizardStepHeader';
 import WizardStepContent from './WizardStepContent';
 import CardActionFeedback from 'components/CardActionFeedback';
+import IconSVG from 'components/IconSVG';
 import classnames from 'classnames';
 import ee from 'event-emitter';
 import globalEvents from 'services/global-events';
+import T from 'i18n-react';
+
+require('./Wizard.scss');
 
 const currentStepIndex = (arr, id) => {
   return findIndex(arr, (step) => id === step.id);
@@ -178,7 +179,7 @@ export default class Wizard extends Component {
         onClick={this.goToNextStep.bind(this, matchedStep.id)}
       >
         <span>Next</span>
-        <span className="fa fa-chevron-right"></span>
+        <IconSVG name="icon-chevron-right" />
       </button>
     );
     let prevButton = (
@@ -186,7 +187,7 @@ export default class Wizard extends Component {
         className="btn btn-secondary"
         onClick={this.goToPreviousStep.bind(this, matchedStep.id)}
       >
-        <span className="fa fa-chevron-left"></span>
+        <IconSVG name="icon-chevron-left" />
         <span>Previous</span>
       </button>
     );
@@ -288,7 +289,7 @@ export default class Wizard extends Component {
           className="close-section float-xs-right"
           onClick={this.props.onClose.bind(null, true)}
         >
-          <span className="fa fa-times" />
+          <IconSVG name="icon-close" />
         </div>
         <div className="result-container">
           <span
@@ -302,13 +303,16 @@ export default class Wizard extends Component {
             <a
               href={callToActionInfo.buttonUrl}
               title={callToActionInfo.buttonLabel}
-              className={classnames("call-to-action btn btn-primary", {'disabled': this.state.loadingCTA})}
+              className={classnames("call-to-action btn btn-primary", {"disabled": this.state.loadingCTA})}
               onClick={this.handleMainCallToActionClick}
             >
               {callToActionInfo.buttonLabel}
               {
                 this.state.loadingCTA ?
-                  <span className="fa fa-spin fa-spinner" />
+                  <IconSVG
+                    name="icon-spinner"
+                    className="fa-spin"
+                  />
                 :
                   null
               }

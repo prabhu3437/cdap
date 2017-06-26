@@ -20,6 +20,7 @@ import MicroserviceUploadActions  from 'services/WizardStores/MicroserviceUpload
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
 import { Label, Form, FormGroup, Col, Input } from 'reactstrap';
 import InputWithValidations from 'components/InputWithValidations';
+import { preventPropagation } from 'services/helpers';
 import T from 'i18n-react';
 
 require('./GeneralInfoStep.scss');
@@ -115,6 +116,9 @@ Summary.propTypes = {
   version: PropTypes.number
 };
 
+// FIXME: Should pass validationError to the InputWithValidations, or just switch
+// to using Input if we don't need validations
+
 const InputMicroserviceInstanceName = connect(
   mapStateToInstanceNameProps,
   mapDispatchToInstanceNameProps
@@ -142,7 +146,7 @@ export default function GeneralInfoStep() {
       <Form
         className="form-horizontal general-info-step"
         onSubmit={(e) => {
-          e.preventDefault();
+          preventPropagation(e);
           return false;
         }}
       >
