@@ -51,7 +51,8 @@ export default class Wizard extends Component {
       loading: false,
       loadingCTA: false,
       error: '',
-      requiredStepsCompleted: false
+      requiredStepsCompleted: false,
+      callToActionInfo: {}
     };
 
     this.handleCallToActionClick = this.handleCallToActionClick.bind(this);

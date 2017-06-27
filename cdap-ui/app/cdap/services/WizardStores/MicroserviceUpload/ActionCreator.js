@@ -16,8 +16,10 @@
 
 import UploadFile from 'services/upload-file';
 import cookie from 'react-cookie';
+import Rx from 'rx';
 import NamespaceStore from 'services/NamespaceStore';
 import MicroserviceUploadStore from 'services/WizardStores/MicroserviceUpload/MicroserviceUploadStore';
+import {findHighestVersion} from 'services/VersionRange/VersionUtilities';
 import {MyArtifactApi} from 'api/artifact';
 import {MyPipelineApi} from 'api/pipeline';
 import isNil from 'lodash/isNil';
@@ -53,6 +55,34 @@ const uploadConfigurationJson = () => {
       artifactId,
       version
     }, artifactConfigurationProperties);
+};
+
+const findMicroserviceArtifacts = (artifacts) => {
+  let microserviceArtifacts = artifacts.filter((artifact) => {
+    return artifact.name === 'microservice-app';
+  });
+
+  if (microserviceArtifacts.length === 0) {
+    return null;
+  }
+
+  let highestVersion = findHighestVersion(microserviceArtifacts.map((artifact) => {
+    return artifact.version;
+  }), true);
+
+  let filteredArtifacts = microserviceArtifacts;
+
+  filteredArtifacts = microserviceArtifacts.filter((artifact) => {
+    return artifact.version === highestVersion;
+  });
+
+  let returnArtifact = filteredArtifacts[0];
+
+  if (filteredArtifacts.length > 1) {
+    returnArtifact.scope = 'USER';
+  }
+
+  return returnArtifact;
 };
 
 const createApplication = () => {
@@ -129,21 +159,23 @@ const createApplication = () => {
     config.configuration.properties = propertiesObj;
   }
 
-  let artifact = {
-    name: 'microservice-app',
-    version: '1.0-SNAPSHOT',
-    scope: 'user'
-  };
-
-  return MyPipelineApi
-    .publish({
-      namespace,
-      appId
-      }, {
-        artifact,
-        config
-      }
-    );
+  return MyArtifactApi.
+    list({ namespace })
+    .flatMap((res) => {
+      let artifact = findMicroserviceArtifacts(res);
+      return Rx.Observable.of(artifact);
+    })
+    .flatMap((artifact) => {
+      return MyPipelineApi
+        .publish({
+          namespace,
+          appId
+          }, {
+            artifact,
+            config
+          }
+        );
+    });
 };
 
 const MicroserviceUploadActionCreator = {
