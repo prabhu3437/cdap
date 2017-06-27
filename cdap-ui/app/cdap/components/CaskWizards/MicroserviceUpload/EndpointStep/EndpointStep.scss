@@ -14,36 +14,6 @@
  * the License.
  */
 
-$input-box-focus-color: #66afe9;
-
-.dsv-editor-container {
-  .dsv-row-container {
-    margin-bottom: 10px;
-
-    .dsv-input-container,
-    .action-buttons-container {
-      display: inline-block;
-    }
-
-    .action-buttons-container {
-      width: 80px;
-
-      .add-row-btn { color: inherit; }
-    }
-
-    .dsv-input-container {
-      // 100% - buttons
-      width: calc(100% - 80px);
-
-      input[type="text"] {
-        border: none;
-        border-bottom: 1px solid lightgrey;
-        border-radius: 0;
-
-        &:focus {
-          border-color: $input-box-focus-color;
-        }
-      }
-    }
-  }
+.input-fetch-size {
+  width: calc(100% - 80px);
 }

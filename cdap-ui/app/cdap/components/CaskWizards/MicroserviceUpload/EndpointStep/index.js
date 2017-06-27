@@ -24,6 +24,8 @@ import InputWithValidations from 'components/InputWithValidations';
 import { preventPropagation } from 'services/helpers';
 import T from 'i18n-react';
 
+require('./EndpointStep.scss');
+
 const mapStateToFetchSizeProps = (state) => {
   return {
     value: state.endpoints.fetch,
@@ -62,7 +64,9 @@ export default function EndpointStep() {
             <Label className="control-label">{T.translate('features.Wizard.MicroserviceUpload.Step5.fetchLabel')}</Label>
           </Col>
           <Col xs="7">
-            <InputFetchSize />
+            <div className="input-fetch-size">
+              <InputFetchSize />
+            </div>
           </Col>
         </FormGroup>
 

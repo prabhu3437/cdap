@@ -350,7 +350,7 @@ export default class Wizard extends Component {
 
   getWizardFooter() {
     let wizardFooter = null;
-    if (this.state.callToActionInfo) {
+    if (!isEmpty(this.state.callToActionInfo)) {
       wizardFooter = this.getCallsToAction();
     }
     if (this.state.error) {
@@ -391,7 +391,7 @@ export default class Wizard extends Component {
             {this.getStepContent()}
           </div>
         </div>
-        <div className={classnames("wizard-footer", {success: this.state.callToActionInfo})}>
+        <div className={classnames("wizard-footer", {success: !isEmpty(this.state.callToActionInfo)})}>
           {this.getWizardFooter()}
         </div>
       </div>

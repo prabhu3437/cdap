@@ -1275,7 +1275,7 @@ features:
         vcoresPlaceholder: The number of virtual cores for the microservice
       Step5:
         description: Provide inbound and outbound queue names (TMS Queue names).
-        fetchLabel: Fetch size
+        fetchLabel: Fetch size (MB)
         fetchPlaceholder: The fetch size across all the queues.
         inboundLabel: Inbound queues
         inboundPlaceholder: Name of inbound queue
