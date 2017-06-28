@@ -18,8 +18,10 @@ package co.cask.cdap.security.impersonation;
 
 import co.cask.cdap.common.conf.CConfiguration;
 import co.cask.cdap.common.conf.Constants;
+import co.cask.cdap.common.kerberos.ImpersonatedOpType;
 import co.cask.cdap.common.kerberos.ImpersonationRequest;
 import co.cask.cdap.common.kerberos.UGIWithPrincipal;
+import co.cask.cdap.proto.id.NamespacedEntityId;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
@@ -28,6 +30,7 @@ import com.google.common.cache.LoadingCache;
 import org.apache.hadoop.security.UserGroupInformation;
 
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -61,6 +64,12 @@ public abstract class AbstractCachedUGIProvider implements UGIProvider {
       Throwables.propagateIfPossible(cause, IOException.class);
       // Otherwise always wrap it with IOException
       throw new IOException(cause);
+    }
+  }
+
+  public void invalidateCacheForEntity(NamespacedEntityId entityId) {
+    for (ImpersonatedOpType type : EnumSet.allOf(ImpersonatedOpType.class)) {
+      ugiCache.invalidate(new ImpersonationRequest(entityId, type));
     }
   }
 
