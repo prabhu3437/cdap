@@ -189,7 +189,7 @@ class NotificationSubscriberService extends AbstractIdleService {
         failureCount = 0;
 
         // The job queue and the last fetched message id was persisted successfully, update the local field as well.
-        // Sleep for 2 seconds if there's no notification, otherwise don't sleep
+        // Sleep for configured number of milliseconds if there's no notification, otherwise don't sleep
         if (lastFetchedMessageId != null) {
           messageId = lastFetchedMessageId;
           return cConf.getLong(Constants.Scheduler.EVENT_POLL_DELAY_MILLIS);
@@ -198,19 +198,16 @@ class NotificationSubscriberService extends AbstractIdleService {
 
       } catch (ServiceUnavailableException e) {
         SAMPLING_LOG.warn("Failed to contact service {}. Will retry in next run.", e.getServiceName(), e);
-        failureCount++;
       } catch (TopicNotFoundException e) {
         SAMPLING_LOG.warn("Failed to fetch from TMS. Will retry in next run.", e);
-        failureCount++;
       } catch (Exception e) {
         LOG.warn("Failed to get and process notifications. Will retry in next run", e);
-        failureCount++;
       }
 
       // If there is any failure during fetching of notifications or looking up of schedules,
       // delay the next fetch based on the strategy
       // Exponential strategy doesn't use the time component, so doesn't matter what we passed in as startTime
-      return scheduleStrategy.nextRetry(failureCount, 0);
+      return scheduleStrategy.nextRetry(++failureCount, 0);
     }
 
     @Nullable
